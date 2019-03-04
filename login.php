@@ -1,28 +1,27 @@
 <?php
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
-echo $bla;
 
 $utilisateur = array(
-	"name" => "lilian",
+	"mail" => "lilian",
 	"password" => "toto"
 );
-$usernameTmp="";
-
+$mailTmp="";
+$msg = "";
 //echo !empty($_POST);
 
 if(!empty($_POST)){
-	if($utilisateur['name'] == $_POST['username']){
+	if($utilisateur['mail'] == $_POST['mail']){
 		if($utilisateur['password'] == $_POST['pass']){
-			echo "Bien connecté";
+			$msg = "Bien connecté";
 		}
 		else {
-			echo "Mot de passe incorrect";
-			$usernameTmp = $_POST['username'];
+			$msg = "Mot de passe incorrect";
+			$mailTmp = $_POST['mail'];
 		}
 	}
 	else {
-		echo "Utilisateur pas connu";
+		$msg = "Adresse mail inconnue";
 	}
 }
 
@@ -69,9 +68,8 @@ if(!empty($_POST)){
 					<span class="login100-form-title p-b-34 p-t-27">
 						Log in
 					</span>
-
 					<div class="wrap-input100 validate-input" data-validate = "Enter username">
-						<input class="input100" type="text" name="username" placeholder="Username" value="<?=$usernameTmp?>" >
+						<input class="input100" type="mail" name="mail" placeholder="Adresse mail" value="<?=$mailTmp?>" >
 						<span class="focus-input100" data-placeholder="&#xf207;"></span>
 					</div>
 
@@ -79,7 +77,7 @@ if(!empty($_POST)){
 						<input class="input100" type="password" name="pass" placeholder="Password">
 						<span class="focus-input100" data-placeholder="&#xf191;"></span>
 					</div>
-
+					<span><?=$msg?></<span>
 					<div class="contact100-form-checkbox">
 						<input class="input-checkbox100" id="ckb1" type="checkbox" name="remember-me">
 						<label class="label-checkbox100" for="ckb1">
