@@ -3,6 +3,9 @@ error_reporting(E_ALL);
 ini_set("display_errors", 1);
 
 $_assets="assets/";
+// /index.php !== de index.php
+//$_url_deconnexion = "index.php?p=deconnexion";
+$_url_deconnexion = "index.php?p=deconnexion";
 session_start();
 
 /*
@@ -23,10 +26,19 @@ if(!empty($_SESSION)){
         // HTML 
         include('view/dashboard.php');
     }
-    elseif(isset($_GET['p']) AND $_GET['p']=="users"){
+    elseif($_GET['p']=="users"){
         $pageTitle="Liste des utilisateurs";
         // HTML 
         include('view/table.php');
+    }   
+    elseif($_GET['p']=="deconnexion"){
+        unset($_SESSION);
+        session_destroy();
+        header('location: index.php');
+    }       
+    else{
+        //header($_SERVER["SERVER_PROTOCOL"]." 404 Not Found");
+        echo "Cette page n'existe pas";
     }
 }
 else {
