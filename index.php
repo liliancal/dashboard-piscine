@@ -5,16 +5,26 @@ ini_set("display_errors", 1);
 $_assets="assets/";
 session_start();
 
+/*
+echo '<pre>';
+print_r($_SESSION);
+echo '</pre>';
+*/
+
+// $_GET existe toujours
+
 if(!empty($_SESSION)){
+    $projectName="LaPiscine";
+    $projectNameShort="L-P";
+    $name=$_SESSION['surname']." ".$_SESSION['name'];
+
     if(!isset($_GET['p'])){
-        // Traitement des données
-        include('model/dashboard.php');
+        $pageTitle="Accueil";
         // HTML 
         include('view/dashboard.php');
     }
     elseif(isset($_GET['p']) AND $_GET['p']=="users"){
-        // Traitement des données
-        //include('model/dashboard.php');
+        $pageTitle="Liste des utilisateurs";
         // HTML 
         include('view/table.php');
     }
