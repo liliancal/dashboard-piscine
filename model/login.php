@@ -28,6 +28,7 @@ catch(Exception $e)
 
 $mailTmp="";
 $msg = "";
+//var_dump($_SESSION);
 
 if(!empty($_POST)){
     // On récupère le $_POST['mail'] et le $_POST['pass']
@@ -45,7 +46,7 @@ if(!empty($_POST)){
     // SI oui
     if(!empty($result)){
         // On regarde si $_POST['pass'] correspond au pass de $_POST['mail']
-        $req = $bdd->prepare('SELECT id FROM user WHERE mail= :mail AND password= :password');
+        $req = $bdd->prepare('SELECT id, nom, prenom FROM user WHERE mail= :mail AND password= :password');
         $req->bindParam(':mail', $mail);
         $req->bindParam(':password', $password);
         $req->execute();
@@ -53,6 +54,11 @@ if(!empty($_POST)){
 
         // Si oui
         if(!empty($result2)){
+			$_SESSION['id']=$result2['id'];	
+			$_SESSION['name']=$result2['nom'];	
+			$_SESSION['surname']=$result2['prenom'];									
+			$_SESSION['mail']=$mail;
+
             $msg = "Bien connecté";
         }
         else {

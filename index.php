@@ -2,7 +2,18 @@
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
 
-// Traitement du formulaire de connexion
-include('model/login.php');
-// HTML 
-include('view/login.php');
+$_assets="assets/";
+session_start();
+
+if(!empty($_SESSION)){
+    // Traitement des données
+    include('model/dashboard.php');
+    // HTML 
+    include('view/dashboard.php');
+}
+else {
+    // Traitement du formulaire de connexion
+    include('model/login.php');
+    // HTML 
+    include('view/login.php');
+}
