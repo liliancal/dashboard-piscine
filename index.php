@@ -21,15 +21,26 @@ if(!empty($_SESSION)){
     $projectNameShort="L-P";
     $name=$_SESSION['surname']." ".$_SESSION['name'];
 
+    //isset = est-ce que la variable existe = est-ce qu'elle est définie ?
     if(!isset($_GET['p'])){
         $pageTitle="Accueil";
         // HTML 
+        include('view/head_dashboard.php');         
+        include('view/topbar.php');    
+        include('view/sidebar.php');                         
         include('view/dashboard.php');
+        include('view/footer.php'); 
+        include('view/footer_dashboard.php');               
     }
     elseif($_GET['p']=="users"){
         $pageTitle="Liste des utilisateurs";
         // HTML 
+        include('view/head_table.php');          
+        include('view/topbar.php');    
+        include('view/sidebar.php');             
         include('view/table.php');
+        include('view/footer.php');        
+        include('view/footer_table.php');         
     }   
     elseif($_GET['p']=="deconnexion"){
         unset($_SESSION);
@@ -43,6 +54,7 @@ if(!empty($_SESSION)){
 }
 else {
     // Traitement du formulaire de connexion
+    // On créé les sessions ici lorsque le formulaire a été envoyé
     include('model/login.php');
     // HTML 
     include('view/login.php');    

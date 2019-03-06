@@ -31,7 +31,7 @@ $msg = "";
 //var_dump($_SESSION);
 
 if(!empty($_POST)){
-    // On récupère le $_POST['mail'] et le $_POST['pass']
+    // On récupère le $_POST['mail'] et le $_POST['pass'] envoyés dans le formulaire
     $mail = $_POST['mail'];
     $password = $_POST['pass'];
 
@@ -43,7 +43,7 @@ if(!empty($_POST)){
     // Un fetchAll affiche toutes les lignes de la BDD
     // On récupère un objet
     $result = $req->fetch();
-    // SI oui
+	// Si oui
     if(!empty($result)){
         // On regarde si $_POST['pass'] correspond au pass de $_POST['mail']
         $req = $bdd->prepare('SELECT id, nom, prenom FROM user WHERE mail= :mail AND password= :password');
