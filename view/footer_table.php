@@ -7,7 +7,7 @@
 <script src="<?=$_assets?>bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
 <!-- SlimScroll -->
 <script src="<?=$_assets?>bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
-<!-- FastClick -->x
+<!-- FastClick -->
 <script src="<?=$_assets?>bower_components/fastclick/lib/fastclick.js"></script>
 <!-- AdminLTE App -->
 <script src="<?=$_assets?>dist/js/adminlte.min.js"></script>
