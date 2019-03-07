@@ -3,7 +3,6 @@ error_reporting(E_ALL);
 ini_set("display_errors", 1);
 require('system/init.php');
 
-$_assets="assets/";
 // /index.php !== de index.php
 //$_url_deconnexion = "index.php?p=deconnexion";
 $_url_deconnexion = "index.php?p=deconnexion";
@@ -38,5 +37,10 @@ else {
     // On créé les sessions ici lorsque le formulaire a été envoyé
     include('model/login.php');
     // HTML 
-    include('view/login.php');    
+    //include('view/login.php');    
+    echo $twig->render('login.html', 
+        array('title' => 'Login', 
+        'assets' => 'assets/',
+        'mailTmp' => $mailTmp)
+    );
 }
