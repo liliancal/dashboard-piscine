@@ -14,5 +14,6 @@ array('title' => 'Liste des utilisateurs',
 'name' => $_SESSION['surname']." ".$_SESSION['name'],
 'projectName' => "LaPiscine",
 'projectNameShort' => "L-P",
-'list' => $row )
+'list' => $row,
+'deconnexion' => $_url_deconnexion )
 );

@@ -12,5 +12,6 @@ array('title' => 'Accueil',
 'assets' => 'assets/',
 'name' => $_SESSION['surname']." ".$_SESSION['name'],
 'projectName' => "LaPiscine",
-'projectNameShort' => "L-P", )
+'projectNameShort' => "L-P",
+'deconnexion' => $_url_deconnexion )
 );
