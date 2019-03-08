@@ -41,6 +41,7 @@ else {
     echo $twig->render('login.html', 
         array('title' => 'Login', 
         'assets' => 'assets/',
-        'mailTmp' => $mailTmp)
+        'mailTmp' => $mailTmp,
+        'message' => $msg)
     );
 }
