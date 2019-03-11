@@ -1,20 +1,29 @@
 <?php
-    $req = $bdd->prepare('SELECT title, content, coverImage FROM article');
+    $req = $bdd->prepare('SELECT article.id, title, content, user.nom, user.prenom FROM `article` 
+                                    INNER JOIN rel_event_article ON rel_event_article.id_article=article.id 
+                                    INNER JOIN user ON user.id = rel_event_article.id
+                                    INNER JOIN article_status ON article_status.id = rel_event_article.id_article_status 
+                                    WHERE article_status.id = 2');
     $req->execute();
     $result=$req->fetchAll();
-    // echo '<pre>';
-    // print_r($result);
-    // echo '</pre>';
+    //echo '<pre>';
+    //print_r($result);
+    //echo '</pre>';
     $row="";
+    $start=0;
+    $lenght=40;
 
     //for ($i=0; $i < count($result); $i++) { 
     foreach($result as $element){
         $row .= '
         <tr>
-        <td>'.$element['title'].'</td>
-        <td>'.$element['content'].'</td>
+            <td>'.$element['id'].'</td>
+            <td>'.$element['title'].'</td>
+            <td>'.substr($element['content'], $start, $lenght).'...</td>
+            <td>'.$element['nom']." ".$element['prenom'].'</td>
+            <td><i class="fa fa-edit" type="button" data-toggle="modal" data-target="#modaldelete"></i></td>
+            <td><i class="fa fa-trash" type="button" data-id="'.$element['id'].'" data-type="suppr" data-toggle="modal" data-target="#modaldelete"></i></td>                        
         </tr>
         ';
     }
 
-?>
