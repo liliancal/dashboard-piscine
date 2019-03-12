@@ -19,16 +19,16 @@
   <div class="content-wrapper">
         <!-- Content Header (Page header) -->
         <section class="content-header">
-            <h1>
-              Liste
-              <small>{{titre_table}}</small>
-            </h1>
-            <ol class="breadcrumb">
-              <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-              <li><a href="#">Liste</a></li>
-              <li class="active">Articles</li>
-            </ol>
-          </section>
+          <h1>
+            Liste
+            <small>{{ tableTitle }}</small>
+          </h1>
+          <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li><a href="#">Tables</a></li>
+            <li class="active">Data tables</li>
+          </ol>
+        </section>
     
         <!-- Main content -->
         <section class="content">
@@ -471,36 +471,21 @@
                 </div>
               </div> -->
               <!-- /.box -->
-    
+
               <div class="box">
                 <div class="box-header">
-                  <h3 class="box-title">Data Table With Full Features</h3>
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body">
                   <table id="example1" class="table table-bordered table-striped">
                     <thead>
-                    <tr>
-                      <th>#</th>
-                      <th>Titre</th>
-                      <th>Contenu</th>
-                      <th>Auteur</th>
-                      <th>Status</th>                        
-                      <th colspan="2">Action</th>
-                    </tr>
+                      {{ trTable | raw }}
                     </thead>
                     <tbody>
-                        {{ list | raw }}
+                      {{ list | raw }}
                     </tbody>
                     <tfoot>
-                    <tr>
-                      <th>#</th>
-                      <th>Titre</th>
-                      <th>Contenu</th>
-                      <th>Auteur</th>
-                      <th>Status</th>                      
-                      <th colspan="2">Action</th>
-                    </tr>
+                        {{ trTable | raw }}
                     </tfoot>
                   </table>
                 </div>
@@ -516,32 +501,7 @@
       </div>
       <!-- /.content-wrapper -->
     </div>
-    <!-- ./wrapper -->   
-
-        <!-- Modal form method post -->
-    <div class="modal fade" id="modaldelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <form method="POST">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Suppression article</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
-
-              </div>
-
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-                <button type="submit" class="btn btn-primary">Supprimer</button>
-                <input type="hidden" name="delete" id="idToDelete" value="" />
-              </div>
-            </div>
-          </div>
-        </form>
-      </div>
+    <!-- ./wrapper -->    
 {% endblock %}       
 
 {% block footer %}
@@ -550,14 +510,6 @@
 
 {% block script %}
 {{ parent() }}
-<script>
-  $(".delete").click(function(){
-    //alert($(this).data('id'));
-    var idElement = $(this).data('id'); 
-    $('.modal-body').text("Souhaitez-vous supprimer l'article numéro : " + idElement);
-    $('#idToDelete').val(idElement);
-  });    
-</script>
 <!-- DataTables -->
 <script src="{{ assets }}bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
 <script src="{{ assets }}bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>

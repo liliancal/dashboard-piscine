@@ -1,8 +1,14 @@
 <?php
-    $req = $bdd->prepare('SELECT article.id, title, content, user.nom, user.prenom, article_status.type FROM `article` 
-                                    INNER JOIN rel_event_article ON rel_event_article.id_article=article.id 
-                                    INNER JOIN user ON user.id = rel_event_article.id
-                                    INNER JOIN article_status ON article_status.id = rel_event_article.id_article_status ');
+    $req = $bdd->prepare('SELECT article.id, title, content, user.nom, user.prenom, article_status.type 
+                        FROM article 
+                        INNER JOIN rel_event_article ON rel_event_article.id_article=article.id 
+                        INNER JOIN user ON user.id = rel_event_article.id
+                        INNER JOIN article_status ON article_status.id = rel_event_article.id_article_status 
+                        AND rel_event_article.id_article_status !=3
+                        AND date = (SELECT MAX(date)
+                                FROM rel_event_article
+                                WHERE rel_event_article.id_article = article.id)
+                        ORDER BY article.id');
     $req->execute();
     $result=$req->fetchAll();
     //echo '<pre>';

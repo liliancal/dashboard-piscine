@@ -4,12 +4,11 @@ $pageTitle="Editer les articles";
 if(isset($_GET['id'])){
     $idArticle=$_GET['id'];
     include('model/modifarticle.php');        
-}
-else{
+} else {
     include('model/editor.php');  
-    $title="";
-    $content="";
-    $coverImage="";
+    $title="votre titre";
+    $content="votre article";
+    $coverImage="monimage.jpg";
 }
         
 echo $twig->render('editor.html', 
@@ -20,5 +19,6 @@ array('title' => $pageTitle,
 'projectNameShort' => "L-P",
 'titleArticle' => $title,
 'contentArticle' => $content,
-'coverImageArticle' => $coverImage)
+'coverImageArticle' => $coverImage,
+'options' => $options)
 ); 

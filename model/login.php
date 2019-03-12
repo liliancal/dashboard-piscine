@@ -51,7 +51,7 @@ if(!empty($_POST)){
 			$_SESSION['name']=$result2['nom'];	
 			$_SESSION['surname']=$result2['prenom'];									
 			$_SESSION['mail']=$mail;
-			header('location: index.php');
+			header('location: admin.php');
             //$msg = "Bien connecté";
         }
         else {

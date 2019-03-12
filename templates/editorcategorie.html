@@ -21,8 +21,8 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Text Editors
-        <small>Advanced form element</small>
+        Éditeur
+        <small>Catégorie</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
@@ -38,7 +38,7 @@
           <div class="box box-info">
             <div class="box-header">
               <h3 class="box-title">Editeur de texte
-                <small>créez votre article sur mesure</small>
+                <small>Ajoutez votre catégorie</small>
               </h3>
               <!-- tools box -->
               <!-- <div class="pull-right box-tools">
@@ -55,15 +55,21 @@
             <div class="box-body pad">
               <form method="POST">
                 <div class="form-group">
-                    <input class="form-control" type="text" placeholder="Titre de l'article" name="title" required value="{{ titleArticle }}">
+                    <input class="form-control" type="text" placeholder="Titre de la catégorie" name="category" required value="{{ titleCategorie }}">
                 </div>    
-                <div class="form-group">
+                <!-- <div class="form-group">
                     <textarea id="editor1" name="content" rows="10" cols="80" required>{{ contentArticle }}</textarea>
                 </div> 
                 <div class="form-group"></div>
                   <select class="form-control" name="categorie" required>
                       <option selected disabled value="0">catégorie</option>
-                      {{ options | raw }}
+                      <option value="1">Tennis</option>
+                      <option value="2">Basketball</option>
+                      <option value="3">Football</option>
+                      <option value="4">Hockey</option>
+                      <option value="5">Natation</option>
+                      <option value="6">Handball</option>
+                      <option value="7">Course</option>
                   </select>
                 </div> 
                 <div class="form-group"></div> 
@@ -72,9 +78,9 @@
                       <label class="custom-file-label" for="inputGroupFile04"></label>
                   </div>
                 </div> 
-                <div class="form-group"></div>                     
+                <div class="form-group"></div>     -->                 
                   <div class="input-group-append">
-                      <button class="btn btn-outline-secondary" type="submit" id="inputGroupFileAddon04">Envoyer</button>
+                      <button class="btn btn-outline-secondary" type="submit" id="inputGroupFileAddon04">Ajouter</button>
                   </div>
                 </div>                     
               </form>
