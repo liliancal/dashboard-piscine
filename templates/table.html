@@ -485,6 +485,7 @@
                       <th>Titre</th>
                       <th>Contenu</th>
                       <th>Auteur</th>
+                      <th>Status</th>                        
                       <th colspan="2">Action</th>
                     </tr>
                     </thead>
@@ -497,6 +498,7 @@
                       <th>Titre</th>
                       <th>Contenu</th>
                       <th>Auteur</th>
+                      <th>Status</th>                      
                       <th colspan="2">Action</th>
                     </tr>
                     </tfoot>
@@ -522,19 +524,19 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Suppression article</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
               <div class="modal-body">
-                Souhaitez-vous supprimer l'article numéro : <p id="idElement"></p>
+
               </div>
 
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
                 <button type="submit" class="btn btn-primary">Supprimer</button>
-                <input type="hidden" name="delete" />
+                <input type="hidden" name="delete" id="idToDelete" value="" />
               </div>
             </div>
           </div>
@@ -549,10 +551,12 @@
 {% block script %}
 {{ parent() }}
 <script>
-    $('#modaldelete').on('shown.bs.modal', function () {
-      //$("#idElement").val( idArticle );
-      console.log($(this).data('id'));
-    })
+  $(".delete").click(function(){
+    //alert($(this).data('id'));
+    var idElement = $(this).data('id'); 
+    $('.modal-body').text("Souhaitez-vous supprimer l'article numéro : " + idElement);
+    $('#idToDelete').val(idElement);
+  });    
 </script>
 <!-- DataTables -->
 <script src="{{ assets }}bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
