@@ -1,4 +1,8 @@
 <?php
+    if(!empty($_POST) AND isset($_POST['delete'])){
+        $article = new Article($bdd);
+        $article->deleteArticle($_POST['delete']);
+    }
     $req = $bdd->prepare('SELECT article.id, title, content, user.nom, user.prenom, article_status.type 
                         FROM article 
                         INNER JOIN rel_event_article ON rel_event_article.id_article=article.id 

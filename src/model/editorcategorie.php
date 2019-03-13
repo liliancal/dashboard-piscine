@@ -9,6 +9,8 @@ if(!empty($_POST)) {
     $categorie = new Categorie();
     $categorie->create($type);
 
+    
+
     // $req = $bdd->prepare('INSERT INTO category_blog (type) VALUES (:type)');
     // $req->execute(array(
     // ':type' => $type

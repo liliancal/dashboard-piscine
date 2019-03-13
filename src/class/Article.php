@@ -78,18 +78,87 @@ class Article{
     }
 
     //creation d'un article
-    function createArticle($titre,$content,$img)
+    function createArticle($titre,$content,$imgName,$imgError,$imgSize,$imgTmp,$id_category,$id_user)
     {
+        $pathFile="files/articles/";
+        $pathImg = $pathFile.$imgName;
         $req = $this->_bdd->prepare('INSERT INTO article (title, content, coverImage) 
                         VALUES (:titre, :content, :coverImage)');
         $req->bindParam (':titre', $titre);
         $req->bindParam (':content', $content);
-        $req->bindParam (':coverImage', $img);
+        $req->bindParam (':coverImage', $pathImg);
         $req->execute();
-        return 'true';
+        //On recupère l'ID du dernier article inseré
+        $lastId =$this->_bdd->lastInsertId();
+        //On injecte ensuite la catégorie et l'ID de l'article dans la table 'rel_article_category'
+        $req = $this->_bdd->prepare('INSERT INTO rel_article_category (id, id_article) VALUES (:categorie,:lastId)');
+        $req->execute(array(
+            'lastId' => $lastId,
+            'categorie' => $id_category
+        ));
+        //On injecte ensuite l'ID user, l'ID de l'art. le status et une DATE dans la table 'rel_event_article'
+        $req = $this->_bdd->prepare('INSERT INTO rel_event_article (id, id_article, id_article_status, date) 
+                              VALUES (:user,:lastId,1,NOW())');
+        $req->execute(array(
+            'user' => $id_user,
+            'lastId' => $lastId,
+        ));
+        $this->saveImgArticle($imgName,$imgError,$imgSize,$imgTmp);
     }
+    
+    function saveImgArticle($imgName,$imgError,$imgSize,$imgTmp){
+        $pathFile="files/articles/";
+        if (isset($imgName) AND $imgError == 0)
+        {
+            // Testons si le fichier n'est pas trop gros
+            if ($imgSize <= 3145728)
+            {
+                // Testons si l'extension est autorisée
+                $infosFichier = pathinfo($imgName);
+                $extensionsAutorisees = array('jpg', 'jpeg', 'gif', 'png');
+                if (in_array($infosFichier['extension'], $extensionsAutorisees))
+                {
+                    // On peut valider le fichier et le stocker définitivement
+                    move_uploaded_file($imgTmp, $pathFile.basename($imgName));
+                    echo "L'envoi a bien été effectué !";
+                }
+                else
+                {
+                    echo 'extention non-autorisee';
+                }
+            }
+            else
+            {
+                echo 'image trop grosse';
+            }
+        }
+        elseif (isset($imgName) AND $imgError == UPLOAD_ERR_NO_FILE)
+        {
+            echo 'fichier inexistant';
+        }
+        elseif (isset($imgName) AND $imgError == UPLOAD_ERR_PARTIAL)
+        {
+            echo 'fichier uploadé que partiellement';
+        }
+        elseif (isset($imgName) AND $imgError == UPLOAD_ERR_INI_SIZE)
+        {
+            echo 'fichier trop gros, personne n\'est gros';
+        }
+        elseif (isset($imgName) AND $imgError == UPLOAD_ERR_FORM_SIZE)
+        {
+            echo 'fichier trop gros';
+        }
+        elseif (!isset($imgName))
+        {
+            echo 'pas de variable';
+        }
+        else
+        {
+            echo 'probleme a l\'envoi';
+        }
 
-
+        return 'true';        
+    }
     //Update d'un article
     function uptadeArticle($titre,$content,$img,$id_article){
         $req = $this->_bdd->prepare('UPDATE article SET title=":title",content=":content",coverImage=":img" WHERE id=:id_article;');
@@ -104,11 +173,10 @@ class Article{
     //Update d'un article
     function uptadeStatus($id_user,$id_article,$status,$date){
         $req = $this->_bdd->prepare('INSERT INTO rel_event_article(id,id_article, id_article_status, date) 
-            VALUES (:id_user , :id_article , :status, :date)');
+            VALUES (:id_user , :id_article , :status, NOW())');
         $req->bindParam (':id_user', $id_user);
         $req->bindParam (':id_article', $id_article);
         $req->bindParam (':status', $status);
-        $req->bindParam (':date', $date);
         $req->execute();
         return 'true';
     }
@@ -116,11 +184,10 @@ class Article{
     //Suppresion d'un article
     function deleteArticle($id_user,$id_article,$status,$date){
         $req = $this->_bdd->prepare('INSERT INTO rel_event_article(id,id_article, id_article_status, date) 
-                                      VALUES (:id_user, :id_article,3, :date');
+                                      VALUES (:id_user, :id_article,3, NOW())');
         $req->bindParam (':id_user', $id_user);
         $req->bindParam (':id_article', $id_article);
         $req->bindParam (':status', $status);
-        $req->bindParam (':date', $date);
         $req->execute();
         return 'true';
     }
@@ -132,6 +199,7 @@ class Article{
         $req->execute();
         return 'true';
     }
+
 
 }
 

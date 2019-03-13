@@ -52,17 +52,19 @@ class Comment{
    	// 	return $this->_comment;
    	// }
 
-   	// function listAll(){
-	// 	   //requete de steph et mathias
-   	// 	return $this->_comment;
-   	// }
+   	function listAll(){
+		$req = $this->_bdd->prepare('SELECT comment.id, article.title, comment.content FROM article INNER JOIN comment ON article.id = comment.id_article');  
+		$req->execute();
+		$result=$req->fetchAll();
+   		return $result;
+   	}
 
    	// function listAllByArticle($idArticle){
    	// 	return $this->_comment;
    	// }
 
 }					
-								//$accesbdd, $idCOmmentaire (facultatif)	
+//$accesbdd, $idCOmmentaire (facultatif)	
 //$monCommentaire = new Comment($bdd,1);
 // $monCommentaire = new Comment($bdd);
 // $result= $monCommentaire->getComment(1);

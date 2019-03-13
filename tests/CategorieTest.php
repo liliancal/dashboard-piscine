@@ -2,7 +2,7 @@
 
 use PHPUnit\Framework\TestCase;
 
-class UserTest extends TestCase
+class CategorieTest extends TestCase
 {
     function testlilian() {
         $category = new Categorie();

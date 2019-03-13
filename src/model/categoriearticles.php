@@ -1,7 +1,12 @@
 <?php
-    $req = $bdd->prepare('SELECT id, type FROM category_blog');
-    $req->execute();
-    $result=$req->fetchAll();
+
+    $categorie = new Categorie();
+    $result=$categorie->getAll();
+
+
+    // $req = $bdd->prepare('SELECT id, type FROM category_blog');
+    // $req->execute();
+    // $result=$req->fetchAll();
     // echo '<pre>';
     // print_r($result);
     // echo '</pre>';

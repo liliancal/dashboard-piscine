@@ -1,17 +1,16 @@
 <?php
-    $req = $bdd->prepare('SELECT comment.id, article.title, comment.content FROM article INNER JOIN comment ON article.id = comment.id_article');  
-    $req->execute();
-    $result=$req->fetchAll();
+    $comment = new Comment($bdd);
+    $result= $comment->listAll();
     // echo '<pre>';
     // print_r($result);
     // echo '</pre>';
     $row="";
     $trTable ="
-<tr>
+    <tr>
     <th>#</th>
     <th>Titre de l'article</th>
     <th>Commentaire</th>
-</tr>";
+    </tr>";
     //for ($i=0; $i < count($result); $i++) { 
     foreach($result as $element){
         $row .= '

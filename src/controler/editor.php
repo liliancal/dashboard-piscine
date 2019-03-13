@@ -1,6 +1,16 @@
 <?php
 $pageTitle="Editer les articles";
+
 // CODE PHP 
+$req = $bdd->prepare('SELECT id, type FROM category_blog');
+$req->execute();
+$result=$req->fetchAll();
+
+$options="";
+foreach ($result as $elements) {
+    $options .= '<option value="'.$elements['id'].'">'.$elements['type'].'</option>';
+}
+
 if(isset($_GET['id'])){
     $idArticle=$_GET['id'];
     include('model/modifarticle.php');        

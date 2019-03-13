@@ -1,5 +1,5 @@
 <?php
-
+/*
 $req = $bdd->prepare('SELECT title, content, coverImage, article.id, user.nom, user.prenom, rel_event_article.date
 FROM article
 INNER JOIN rel_event_article ON rel_event_article.id_article = article.id
@@ -8,6 +8,17 @@ INNER JOIN article_status ON article_status.id = rel_event_article.id_article_st
 WHERE article_status.id = 2');
 $req->execute();
 $result = $req->fetchAll();
+*/
+
+
+// instanciation de la class Article et 
+//récupération du résultat de l'objet front()
+$myText=new Article($bdd);
+$result= $myText->front($bdd);
+
+
+
+
 
 $article = "";
  

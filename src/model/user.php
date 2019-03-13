@@ -1,14 +1,15 @@
 <?php
-    $req = $bdd->prepare('SELECT id, nom, prenom, mail FROM user');
-    $req->execute();
-    $result=$req->fetchAll();
-    // echo '<pre>';
-    // print_r($result);
-    // echo '</pre>';
+
+    // $req = $bdd->prepare('SELECT id, nom, prenom, mail FROM user');
+    // $req->execute();
+    // $result=$req->fetchAll();
+    $user = new User($bdd);
+    $list = $user->getAllUser();
+
     $row="";
 
     //for ($i=0; $i < count($result); $i++) { 
-    foreach($result as $element){
+    foreach($list as $element){
         $row .= '
         <tr>
         <td>'.$element['prenom'].'</td>

@@ -29,7 +29,7 @@ if(!empty($_POST)){
         else{
             $idcivilite=1;
             $idstatus=2;
-            $req = $bdd->prepare("INSERT INTO user (nom, prenom, mail, password, id_civilite, id_user_status)
+            /*$req = $bdd->prepare("INSERT INTO user (nom, prenom, mail, password, id_civilite, id_user_status)
                                     VALUES(:nom, :prenom, :mail, :password, :idcivilite, :idstatus)");
             $req->bindParam(':nom', $nom);
             $req->bindParam(':prenom', $prenom);
@@ -37,15 +37,18 @@ if(!empty($_POST)){
             $req->bindParam(':password', $password);
             $req->bindParam(':idcivilite', $idcivilite);
             $req->bindParam(':idstatus', $idstatus);
-            $req->execute();
-            $result=$req;
-        }
+            $req->execute();*/
+            
+            $user = new User ($bdd);
+            $user->createUser( $nom, $prenom, $mail, $password,'img.jpg', $idcivilite, $idstatus);
+                
+           }
     }
     else {
         $msg = "Tous les champs ne sont pas remplis";        
     }
 }
-    //enser à vérifier la présence du cnfirm password
+    //penser à vérifier la présence du cnfirm password
 
     // ensuite ajouter vérif password et password confirm identiques sinon on affiche un message
 
