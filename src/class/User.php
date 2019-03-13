@@ -1,133 +1,156 @@
 <?php
+
 class User {
     private $_id;
-    private $_name;
-    private $_firstname;
-    private $_mail;
+    public $_name;
+    public $_firstname;
+    public $_mail;
+    private $_password;
     private $_status;
+    private $_civilite;
     private $_avatar;
-    private $_civilité;
+
+    private $_verifyPass;
     private $_bdd;
- 
-    function __construct($bdd, $id = null){
-        $this->_bdd=$bdd;
-        if($id !== NULL){
+
+    function __construct($bdd, $id = null)
+    {
+        $this->_bdd = $bdd;
+        if($id != NULL){
             $user = $this->getUser($id);
             $this->_id = $id;
-            $this->_name = $name;
-            $this->_firstname = $firstname;
-            $this->_mail = $mail;
-            $this->_status = $status;
-            $this->_avatar = $avatar;
-            $this->_civilité = $civilité;
-         }
+            $this->_name = $user['nom'];
+            $this->_firstname = $user['prenom'];
+            $this->_mail = $user['mail'];
+            $this->_password = $user['password'];
+            $this->_avatar = $user['avatar'];
+            $this->_civilite = $user['id_civilite'];
+            $this->_status = $user['id_user_status'];
+        }
     }
-    function createUser ($name,
-                        $firstname,
-                        $mail,
-                        $status,
-                        $avatar,
-                        $civilité){
-        $req = $this->_bdd->prepare("INSERT INTO user (nom, prenom, mail, password, id_civilite, id_user_status)
-                                    VALUES(:nom, :prenom, :mail, :password, :idcivilite, :idstatus)");
-
-                        $req->bindParam(':nom', $nom);
-                        $req->bindParam(':prenom', $prenom);
-                        $req->bindParam(':mail', $mail);
-                        $req->bindParam(':password', $password);
-                        $req->bindParam(':idcivilite', $idcivilite);
-                        $req->bindParam(':idstatus', $idstatus);
-                        $req->execute();
-                       
-                    return true ;
-    }
-
-    function getUser ($id){
-        $req = $this->_bdd->prepare("SELECT nom, prenom, mail, password, id_civilite, id_user_status 
+    
+    function getUser($id)
+    {
+        $req = $this->_bdd->prepare("SELECT nom, prenom, mail, password, avatar, id_civilite, id_user_status 
                                 FROM user
-                                WHERE id= $id");
+                                WHERE id=:id");
+                    $req->bindParam(':id', $id);
                     $req->execute();
                     $result = $req->fetch();
                     return $result;
     }
 
-    function getAllUser (){
-        $req = $this->_bdd->prepare("SELECT nom, prenom, mail, password, id_civilite, id_user_status FROM user");
+    function getAllUser()
+    {
+        $req = $this->_bdd->prepare("SELECT id, nom, prenom, mail, avatar, id_civilite, id_user_status 
+                                    FROM user");
                     $req->execute();
                     $result = $req->fetchAll();
                     return $result ;
     }
 
-    function updateUser ($id, $name,
-                            $firstname,
-                            $mail,
-                            $status,
-                            $avatar,
-                            $civilité){
-        $req = $this->_bdd->prepare("UPDATE ( nom, prenom, mail, password, id_civilite, id_user_status)
-                                    SET(:nom, :prenom, :mail, :password, :idcivilite, :idstatus)
-                                    WHERE id= :id");    
-                        $req->bindParam(':id', $id);
-                        $req->bindParam(':nom', $nom);
-                        $req->bindParam(':prenom', $prenom);
-                        $req->bindParam(':mail', $mail);
-                        $req->bindParam(':password', $password);
-                        $req->bindParam(':idcivilite', $idcivilite);
-                        $req->bindParam(':idstatus', $idstatus);
-                        $req->execute();
-                    
-                    return true;
-
+    function createUser($name,$firstname,$mail,$password,$avatar,$civilite,$status) 
+    {
+        $this->_password = password_hash($password, PASSWORD_DEFAULT);
+        $req = $this->_bdd->prepare("INSERT INTO user (nom, prenom, mail, password, avatar, id_civilite, id_user_status)
+                                    VALUES (:nom, :prenom, :mail, :password, :avatar, :idcivilite, :idstatus)");
+                    $req->execute(array(
+                        'nom' => $name,
+                        'prenom' => $firstname,
+                        'mail' => $mail,
+                        'password' => $this->_password,
+                        'avatar' => $avatar,
+                        'idcivilite' => $civilite,
+                        'idstatus' => $status
+                    ));
+                    return true ;
     }
 
-    function deleteUser ($id) {
-        $req = $this->_bdd->prepare("DELETE user FROM user WHERE id=id");
+    function updateUser($id,$name,$firstname,$mail,$avatar,$civilite,$status)
+    {
+        $req = $this->_bdd->prepare("UPDATE user
+                                    SET nom=:nom, prenom=:prenom, mail=:mail, avatar=:avatar, 
+                                        id_civilite=:idcivilite, id_user_status=:idstatus
+                                    WHERE id=:id");    
+                    $req->execute(array(
+                        'id' => $id,
+                        'nom' => $name,
+                        'prenom' => $firstname,
+                        'mail' => $mail,
+                        'avatar' => $avatar,
+                        'idcivilite' => $civilite,
+                        'idstatus' => $status
+                    ));
+                    return true;
+    }
+
+    function deleteUser($id) 
+    {
+        $req = $this->_bdd->prepare("DELETE FROM user WHERE id=:id");
+                    $req->execute(array('id' => $id));
+                    return true;
+    }
+
+    function passChange($id, $oldPassword, $newPassword) 
+    {
+        $req = $this->_bdd->prepare("SELECT password FROM user WHERE id=:id");
+                    $req->bindParam(':id', $id);
                     $req->execute();
+                    $result = $req->fetch();
+        $this->_verifyPass = $result['password'];
+        if(password_verify($oldPassword, $this->_verifyPass)) {
+            $this->_password = password_hash($newPassword, PASSWORD_DEFAULT);
+            $req = $this->_bdd->prepare("UPDATE user
+                                        SET password=:newPassword
+                                        WHERE id=:id");    
+                    $req->execute(array('id' => $id, 'newPassword' => $this->_password));
                     return true;
-
+        } else {
+            return 'Le mot de passe ne correspond pas.';
+        }
     }
 
-    function connexion ($mail, $password){
-        if(!empty($_POST)){
-                $mail = $_POST['mail'];
-                $password = $_POST['pass'];
+    function connexion($mail, $password)
+    {
+        $req = $this->_bdd->prepare('SELECT id, nom, prenom, password FROM user WHERE mail= :mail');
+        $req->bindParam(':mail', $mail);
+        $req->execute();
+        $checkMail = $req->fetch();
 
-                $req = $this->_bdd->prepare('SELECT id FROM user WHERE mail= :mail');
-                $req->bindParam(':mail', $mail);
-                $req->execute();
-                $result = $req->fetch();
-
-        if(!empty($result)){
-            
-                $req = $this->_bdd->prepare('SELECT id, nom, prenom FROM user WHERE mail= :mail AND password= :password');
-                $req->bindParam(':mail', $mail);
-                $req->bindParam(':password', $password);
-                $req->execute();
-                $result2 = $req->fetch();
-                
-        if(!empty($result2)){
-
-                $_SESSION['id']=$result2['id'];	
-                $_SESSION['name']=$result2['nom'];	
-                $_SESSION['surname']=$result2['prenom'];									
+        if(!empty($checkMail)){
+            $checkPass = password_verify($password, $checkMail['password']);
+    
+            if($checkPass){
+                $_SESSION['id']=$checkMail['id'];	
+                $_SESSION['name']=$checkMail['nom'];	
+                $_SESSION['surname']=$checkMail['prenom'];									
                 $_SESSION['mail']=$mail;
-                 header('location: admin.php');
-                   
-                } else {
-                    $msg = "Mot de passe incorrect";
-                    $mailTmp = $_POST['mail'];
-            }   
-                } else {
-       
-                $msg = "Adresse mail inconnue";
+                header('location: admin.php');
+                return "Vous êtes connecté";
+            } else {
+                $this->_mail = $mail;
+                return "Mot de passe incorrect";
             }
+        } else {
+            return "Adresse mail inconnue";
         }
-       
-
     }
 }
-// $user = new User ($this->_bdd, $id=1);
-// $result=$user->getUser ($id=1);
-// echo $result ["name"]; 
+
+// $user = new User ($bdd);
+// //$user->createUser('yoyo','asticot','yoastico@gmail.com','papayoyo','img.pjg',3,3);
+// //$user->updateUser(8,'name','firstname','mail','avatar',1,2);
+// //$user->deleteUser(7);
+// //$user->passChange(9, 'papayoyo', 'papayoyo');
+// //$test = $user->connexion('yoastico@gmail.com','papayoyo');
+
+// //$result = $user->getUser(9);
+// $result = $user->getAllUser();
+
+// echo '<pre>';
+// //print_r($test);
+// echo '<br>';
+// print_r($result);
+// echo '</pre>';
 
 

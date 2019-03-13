@@ -1,12 +1,24 @@
 <?php
-
 class Categorie {
     private $_bdd;
     private $_id;
     private $_type;
     private $_verify;
     private $_adress = 'category_blog';
-
+    /* 
+    Si on oublie de passer un argument à une méthode et que celui-ci est attendu, 
+    PHP va renvoyer une erreur
+    Si cet argument est facultatif on lui attribue une valeur par défaut dans la méthode
+    Exemple :
+        function maMethode($mavariable = "LaPiscine")
+        Par défaut $mavariable vaut "LaPiscine"
+    Si lorsqu'on appelle la méthode maMethode on lui passe une valeur
+    Exemple :
+        $result= $var->maMethode("Bordeaux")
+        $mavariable dans la méthode vaut "Bordeaux"
+        $result= $var->maMethode()
+        $mavariable dans la méthode vaut "LaPiscine"        
+    */
     function __construct($bdd = NULL, $idcategorie = NULL){
         if ($idcategorie != NULL) {
             $this->_id = $idcategorie;
@@ -18,13 +30,6 @@ class Categorie {
             $this->_bdd = $bdd;
         }   
     }
-
-    // function __construct($idcategorie = NULL){
-    //     if ($idcategorie != NULL) {
-    //         $this->_id = $idcategorie;
-    //     }
-    //     $this->_bdd = new PDO('mysql:host=localhost;dbname=blog_e_commerce;charset=utf8', 'root', 'root');
-    // }
 
     function create($type) {
         $this->_type = $type;
@@ -87,7 +92,7 @@ class Categorie {
         }
     }
 
-    function idVerify() {
+    private function idVerify() {
         $req = $this->_bdd->prepare('SELECT * FROM '.$this->_adress.' WHERE id=:id'); 
         $req->bindParam(':id', $this->_id);
         $req->execute();

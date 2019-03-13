@@ -20,6 +20,7 @@ function debug($varToDebug){
 
 /* On charge toutes les classes PHP */
 require_once 'system/autoload.php';
+
 // On charge toutes les librairies installées avec composer 
 // (dont twig)
 require_once 'vendor/autoload.php';

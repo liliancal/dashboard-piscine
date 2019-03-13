@@ -6,10 +6,13 @@ if(!empty($_POST)) {
     // $content = $_POST['content'];
     // $image = $_POST['image'];
     
-    $req = $bdd->prepare('INSERT INTO category_blog (type) VALUES (:type)');
-    $req->execute(array(
-    ':type' => $type
-    ));
+    $categorie = new Categorie();
+    $categorie->create($type);
+
+    // $req = $bdd->prepare('INSERT INTO category_blog (type) VALUES (:type)');
+    // $req->execute(array(
+    // ':type' => $type
+    // ));
 
     header("location: admin.php?p=categoriearticles");
 }
