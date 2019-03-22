@@ -13,8 +13,8 @@ $result = $req->fetchAll();
 
 // instanciation de la class Article et 
 //récupération du résultat de l'objet front()
-$myText=new Article($bdd);
-$result= $myText->front($bdd);
+$article=new Article($bdd);
+$result= $article->getListArticle();
 
 
 

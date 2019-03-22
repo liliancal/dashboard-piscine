@@ -63,7 +63,7 @@ class Article{
     //Obtention de la liste de tous les articles
     function getListArticle(){
 
-        $req = $this->_bdd->prepare('SELECT article.id, title, content, user.nom, user.prenom, article_status.type 
+        $req = $this->_bdd->prepare('SELECT article.id, title, content, user.nom, user.prenom, article_status.type, coverImage 
                         FROM article 
                         INNER JOIN rel_event_article ON rel_event_article.id_article=article.id 
                         INNER JOIN user ON user.id = rel_event_article.id
